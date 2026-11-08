@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: situs
+abstract: >-
+  Spatial indexes over f64 boxes in Rust, with no false negatives. The crate
+  provides a static R-tree bulk-loaded by Sort-Tile-Recursive packing and a
+  dynamic R*-tree with insertion and exact removal, both answering box
+  queries, a dual-tree join and nearest-neighbor search. Box queries return
+  exactly the entries whose boxes meet the window. Nearest-neighbor search
+  ranks candidates by f64 bounds on each squared distance that are proven to
+  bracket the exact value, so rounding can add candidates but never remove
+  one, and no distance is presented as exact. Under the optional
+  exact-nearest feature, candidates are ranked exactly with arithmetica. The
+  crate is no_std with alloc and has no dependencies by default.
+authors:
+  - family-names: Erlick
+    given-names: Justin
+    orcid: "https://orcid.org/0009-0006-5545-0158"
+version: 0.1.0
+date-released: 2026-11-08
+license:
+  - MIT
+  - Apache-2.0
+repository-code: "https://github.com/JustinGeoSci/situs"
+url: "https://justingeosci.dev/situs/"
+keywords:
+  - computational geometry
+  - spatial index
+  - R-tree
+  - nearest neighbor
+  - bounding box
+  - Rust

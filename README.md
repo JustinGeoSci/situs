@@ -2,37 +2,39 @@
 
 Spatial indexes over `f64` boxes, with no false negatives.
 
-`situs` governs which entries a query must consider rather than which ones are the answer. Box queries return exactly the entries whose boxes meet the window; nearest-neighbor queries return a **candidate set** certified to contain the true nearest entries. The caller decides exactly among those candidates.
+`situs` answers two questions of a set of stored boxes: which of them might meet a query box, and which might lie nearest to a query point. The index operates as a **candidate filter** rather than a decision procedure. It returns every entry that could be an answer, and the caller decides exactly among them.
 
 ## The guarantee
 
-**No false negatives.** Every entry whose box meets the query box is returned, and every entry that could be among the k nearest to a query point is returned.
+The index never omits an answer. Every entry whose box meets the query box is returned, and every entry that could be among the k nearest to a query point is returned.
 
-- **Every comparison is exact, or a certified bound whose error can only add candidates.** Box tests compare stored `f64` values. Node boxes are the exact `min` and `max` of their children's boxes. Nearest-neighbor search uses `f64` bounds on each squared distance, `lower_sq ≤ d² ≤ upper_sq`, proven to bracket the exact value, so rounding can widen the candidate set but never shrink it.
-- **No distance is presented as exact.** Nearest-neighbor results carry their certified bounds, not a distance. Under the opt-in `exact-nearest` feature, candidates are ranked exactly by `arithmetica`'s exact distance comparison.
+- **Every comparison is exact, or is made on a certified bound whose error can only add candidates.** Box tests compare stored `f64` values, and node boxes are the exact `min` and `max` of their children's boxes. Nearest-neighbor search uses `f64` bounds on each squared distance, `lower_sq ≤ d² ≤ upper_sq`, proven to bracket the exact value, so rounding can widen the candidate set but never shrink it.
+- **No distance is presented as exact.** Nearest-neighbor results carry their certified bounds rather than a distance. Under the opt-in `exact-nearest` feature, candidates are ranked exactly by the exact distance comparison of [`arithmetica`](https://crates.io/crates/arithmetica).
 
-Box queries return *exactly* the entries whose boxes meet the window. Arithmetic decides only the tree's shape (bulk-load sort keys, R\* heuristics), never its contents.
+A box query returns *exactly* the entries whose boxes meet the window. Arithmetic determines only the shape of the tree (the sort keys of the bulk load and the R\* heuristics), never its contents.
 
 ## Two index types
 
-- **`Index`:** static, bulk-loaded by Sort-Tile-Recursive packing. Compact and the fastest to query. Use it when the set is built once and queried many times.
-- **`DynamicIndex`:** an R\*-tree with insertion and exact removal (by box and id). Its bounds shrink as entries leave. Use it when the set changes.
+- **`Index`** is static and bulk-loaded by Sort-Tile-Recursive packing. It is compact and the fastest to query, suited to a set that is built once and queried many times.
+- **`DynamicIndex`** is an R\*-tree with insertion and exact removal, by box and id, and its bounds shrink as entries leave. It suits a set that changes. It can also be bulk-loaded by the same packing as the static index.
 
-Both hold `(Rect, u32)` entries. `Rect` is an axis-aligned box with closed intervals: four finite bounds, not inverted; zero width and height are allowed, and touching boxes meet. `Rect::new` refuses anything else. Ids are not payloads, so the index stays independent of what it indexes; the caller maps ids back to its own data.
+Both hold `(Rect, u32)` entries. `Rect` is an axis-aligned box with closed intervals, defined by four finite bounds that are not inverted. Zero width and zero height are allowed, and touching boxes meet. `Rect::new` refuses anything else. An id is a key rather than a payload, so the index remains independent of what it indexes, and the caller maps each id back to its own data.
 
 ## Operations
 
 | | `Index` | `DynamicIndex` |
 |---|---|---|
+| Bulk load (`bulk_load`) | ✓ | ✓ |
 | Box query (`query`) | ✓ | ✓ |
-| Early-exit box query (`try_query`, no allocation) | ✓ | — |
-| Pairs of meeting boxes (`join`, `self_join`) | ✓ | — |
+| Early-exit box query without allocation (`try_query`) | ✓ | |
+| Pairs of meeting boxes (`join`, `self_join`) | ✓ | |
 | Nearest-neighbor candidates (`nearest_candidates`) and distance browsing (`browse`) | ✓ | ✓ |
 | Exact k nearest (`nearest_exact`, `exact-nearest` feature) | ✓ | ✓ |
-| `insert`, `remove` | — | ✓ |
+| `insert`, `remove` | | ✓ |
 | `bounds`, `len`, `is_empty` | ✓ | ✓ |
+| Memory needed for `n` entries (`memory_size_for`) | ✓ | |
 
-On the static index, a query that contains a whole subtree's box reports that subtree without testing it further.
+On the static index, a query whose window contains a whole subtree's box reports that subtree without testing it further.
 
 ## Examples
 
@@ -66,15 +68,15 @@ assert!(near[0].lower_sq <= 2.0 && 2.0 <= near[0].upper_sq);
 
 ## What it does not do
 
-- **No exact distances.** Nearest-neighbor results are bounds; exact ranking, under `exact-nearest`, compares distances without computing them.
-- **No `join`, `self_join` or early-exit query on the dynamic tree** in 0.1.
-- **No encoding of an index.** Rebuild it from the entries.
+- **It computes no exact distances.** Nearest-neighbor results are bounds, and exact ranking under `exact-nearest` compares distances without computing them.
+- **The dynamic tree has no `join`, `self_join` or early-exit query in 0.1.**
+- **It does not encode an index.** An index is rebuilt from its entries.
 
 ## Design
 
 - No dependencies by default. The `exact-nearest` feature adds [`arithmetica`](https://crates.io/crates/arithmetica), also `no_std`, as the only dependency.
 - `#![no_std]` with `alloc`.
-- `#![forbid(unsafe_code)]`; no panics on any input it accepts.
+- `#![forbid(unsafe_code)]`, and no panics on any input it accepts.
 - Deterministic: the same entries in the same order give the same tree and the same results.
 - Minimum supported Rust version: 1.85.
 

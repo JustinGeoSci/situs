@@ -1,0 +1,34 @@
+# query.dict
+#
+# libFuzzer's recommended dictionary for the `query` target, converted
+# from libFuzzer's printed form (C octal escapes)
+# to the dictionary file form, which reads only \\, \" and \xNN
+# escapes. Each entry's use count is on the comment line above it, in
+# libFuzzer's order.
+#
+#   cargo +nightly fuzz run query -- -dict=dict/query.dict
+
+# uses: 4477
+kw001="\xFF\xFF\xFF\xFF\xFF\xFF\xFFL"
+# uses: 3435
+kw002="\x00\x00\x00\x00\x00\x00\x00 "
+# uses: 3354
+kw003="\xFF\xFF\xFF\xFF\xFF\xFF\xFF-"
+# uses: 3171
+kw004="\xFF\x00"
+# uses: 2843
+kw005="\x01\x00\x00\x00\x00\x00\x00\x1B"
+# uses: 2367
+kw006="\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x09"
+# uses: 1825
+kw007="\xFF\xFF\xFF\xFF\xFF\xFF\xFF?"
+# uses: 1626
+kw008="\x81\x00\x00\x00\x00\x00\x00\x00"
+# uses: 1118
+kw009="\xD3\x00\x00\x00\x00\x00\x00\x00"
+# uses: 868
+kw010="\x00\x00\x00\x00"
+# uses: 742
+kw011="\xBA\x00\x00\x00"
+# uses: 291
+kw012="\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xF8"

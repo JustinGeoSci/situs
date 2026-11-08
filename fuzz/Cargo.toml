@@ -1,0 +1,41 @@
+[package]
+name = "situs-fuzz"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "=0.4.13"
+
+# The crate under test.
+[dependencies.situs]
+path = ".."
+
+[features]
+# Forwarded to situs: the nearest target then also checks nearest_exact.
+exact-nearest = ["situs/exact-nearest"]
+
+[[bin]]
+name = "query"
+path = "fuzz_targets/query.rs"
+doc = false
+
+[[bin]]
+name = "join"
+path = "fuzz_targets/join.rs"
+doc = false
+
+[[bin]]
+name = "nearest"
+path = "fuzz_targets/nearest.rs"
+doc = false
+
+[[bin]]
+name = "dynamic_ops"
+path = "fuzz_targets/dynamic_ops.rs"
+doc = false

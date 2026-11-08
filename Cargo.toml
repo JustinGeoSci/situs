@@ -1,0 +1,49 @@
+[package]
+name = "situs"
+description = "Static and dynamic R-trees over f64 boxes with no false negatives, and nearest-neighbor search by certified bounds"
+version = "0.1.0"
+license = "MIT OR Apache-2.0"
+authors = ["Justin Erlick"]
+edition = "2024"
+rust-version = "1.85"
+readme = "README.md"
+repository = "https://github.com/JustinGeoSci/situs"
+documentation = "https://docs.rs/situs"
+categories = ["data-structures", "no-std", "science::geo"]
+keywords = ["spatial-index", "r-tree", "bounding-box", "no_std"]
+
+[dependencies]
+# Only under `exact-nearest`; the default build has no dependencies.
+arithmetica = { version = "0.1.1", optional = true, default-features = false }
+
+[features]
+# `nearest_exact` on both index types: the candidates by certified bounds,
+# ranked exactly by `arithmetica::compare_distance`.
+exact-nearest = ["dep:arithmetica"]
+
+[dev-dependencies]
+proptest = "=1.5.0"
+
+[package.metadata.docs.rs]
+features = ["exact-nearest"]
+rustdoc-args = ["--cfg", "docsrs"]
+
+[lints.rust]
+unsafe_code = "forbid"
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(fuzzing)"] }
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "deny"
+too_many_lines = "warn"
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+doc_markdown = "allow"
+wildcard_imports = "allow"
+similar_names = "allow"
+many_single_char_names = "allow"
+redundant_closure_for_method_calls = "allow"
+uninlined_format_args = "allow"
+inline_always = "allow"
+items_after_statements = "allow"
+single_match_else = "allow"

@@ -1,0 +1,14 @@
+# join.dict
+#
+# libFuzzer's recommended dictionary for the `join` target, converted
+# from libFuzzer's printed form (C octal escapes)
+# to the dictionary file form, which reads only \\, \" and \xNN
+# escapes. Each entry's use count is on the comment line above it, in
+# libFuzzer's order.
+#
+#   cargo +nightly fuzz run join -- -dict=dict/join.dict
+
+# uses: 346
+kw001="\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x1B"
+# uses: 70
+kw002="\x0B\x00\x00\x00\x00\x00\x00\x00"

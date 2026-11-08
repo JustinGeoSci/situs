@@ -1,0 +1,31 @@
+situs
+Copyright 2026 Justin Erlick
+
+Licensed under either of the Apache License, Version 2.0, or the MIT
+license, at your option.
+
+The algorithms are written from their published descriptions.
+
+The static index is packed by the Sort-Tile-Recursive method:
+
+  Leutenegger, S.T., Lopez, M.A., Edgington, J.M. (1997). STR: A Simple and
+  Efficient Algorithm for R-Tree Packing. Proceedings of the 13th
+  International Conference on Data Engineering (ICDE), 497-506.
+
+The dynamic index is an R*-tree:
+
+  Beckmann, N., Kriegel, H.-P., Schneider, R., Seeger, B. (1990). The
+  R*-tree: An Efficient and Robust Access Method for Points and Rectangles.
+  Proceedings of the ACM SIGMOD International Conference on Management of
+  Data, 322-331.
+
+The join is a synchronized traversal of two R-trees:
+
+  Brinkhoff, T., Kriegel, H.-P., Seeger, B. (1993). Efficient Processing of
+  Spatial Joins Using R-trees. Proceedings of the ACM SIGMOD International
+  Conference on Management of Data, 237-246.
+
+Nearest-neighbor search and distance browsing follow:
+
+  Hjaltason, G.R., Samet, H. (1999). Distance Browsing in Spatial
+  Databases. ACM Transactions on Database Systems 24(2), 265-318.

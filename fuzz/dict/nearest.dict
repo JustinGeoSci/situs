@@ -1,0 +1,22 @@
+# nearest.dict
+#
+# libFuzzer's recommended dictionary for the `nearest` target, converted
+# from libFuzzer's printed form (C octal escapes)
+# to the dictionary file form, which reads only \\, \" and \xNN
+# escapes. Each entry's use count is on the comment line above it, in
+# libFuzzer's order.
+#
+#   cargo +nightly fuzz run nearest -- -dict=dict/nearest.dict
+
+# uses: 3100
+kw001="8\x00\x00\x00"
+# uses: 2223
+kw002="\x01\x00\x00'"
+# uses: 886
+kw003="fffffff\x06"
+# uses: 838
+kw004="\x00("
+# uses: 172
+kw005="\x8C\x00\x00\x00"
+# uses: 106
+kw006="\x15\x00\x00\x00"
