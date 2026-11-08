@@ -19,7 +19,11 @@ authors:
     orcid: "https://orcid.org/0009-0006-5545-0158"
 version: 0.1.0
 date-released: 2026-11-08
-license: MIT
+license:
+  - MIT
+  - Apache-2.0
+repository-code: "https://github.com/JustinGeoSci/situs"
+url: "https://justingeosci.dev/situs/"
 keywords:
   - computational geometry
   - spatial index
@@ -27,3 +31,10 @@ keywords:
   - nearest neighbor
   - bounding box
   - Rust
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24064034
+    description: "The concept DOI, which always resolves to the latest version."
+  - type: doi
+    value: 10.5281/zenodo.24064035
+    description: "The DOI for version 0.1.0."
