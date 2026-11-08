@@ -19,11 +19,7 @@ authors:
     orcid: "https://orcid.org/0009-0006-5545-0158"
 version: 0.1.0
 date-released: 2026-11-08
-license:
-  - MIT
-  - Apache-2.0
-repository-code: "https://github.com/JustinGeoSci/situs"
-url: "https://justingeosci.dev/situs/"
+license: MIT
 keywords:
   - computational geometry
   - spatial index
