@@ -33,7 +33,8 @@
 //! otherwise    →  L = fl(ŝ · K_LO),     U = fl(ŝ · K_HI)
 //! ```
 //!
-//! Here `T = 2⁻¹⁰²⁰`, `U_SMALL = 2⁻¹⁰¹⁹`, `K_LO = 1 − 2⁻⁵⁰` and
+//! Here `T = 2⁻¹⁰²⁰` (`UNDERFLOW_THRESHOLD` in the code), `U_SMALL = 2⁻¹⁰¹⁹`
+//! (`UPPER_BELOW_THRESHOLD`), `K_LO = 1 − 2⁻⁵⁰` and
 //! `K_HI = 1 + 2⁻⁵⁰` (both factors exactly representable), and `MAX` is the
 //! largest finite `f64`.
 //!

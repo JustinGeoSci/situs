@@ -49,12 +49,13 @@
 //! requires, comparing the distances from a query point to two stored
 //! points, belongs to `arithmetica`.
 //!
-//! **The bulk loader is the one place where arithmetic enters.** It sorts
-//! entries by the centers of their boxes, computed in floating point, and
-//! those keys determine the *shape* of the tree rather than its *contents*. A
-//! poor key produces a slower tree with the same answers. The tests attack
-//! each of the three conditions separately, and a mutation test breaks each
-//! condition in turn and fails a named test.
+//! **Apart from the certified distance bounds, arithmetic enters in two
+//! places, and both determine the *shape* of the tree rather than its
+//! *contents*.** The bulk loader sorts entries by the centers of their boxes,
+//! computed in floating point, and the dynamic tree's R\* heuristics compare
+//! `f64` areas, margins and overlaps. A poor key or heuristic produces a slower tree
+//! with the same answers. The tests attack each of the three conditions separately,
+//! and a mutation test breaks each condition in turn and fails a named test.
 //!
 //! # Bulk loading
 //!
@@ -170,7 +171,7 @@
 //! nearest to a query point without computing any exact distance. For each
 //! box the crate computes two `f64` values that bracket the exact squared
 //! distance, `lower_sq ≤ d² ≤ upper_sq`, certified by a rounding-error
-//! argument (see the `nearest` module documentation). A best-first search
+//! argument (in `src/nearest/bounds.rs` in the crate's source). A best-first search
 //! over the lower bounds (Hjaltason & Samet, "Distance Browsing in Spatial
 //! Databases", ACM TODS 24(2), 1999) then returns every entry whose interval
 //! could place it among the k nearest. The result always includes the true

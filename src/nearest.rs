@@ -5,7 +5,7 @@
 //! `situs` holds no exact distance arithmetic, so it never ranks entries by
 //! a computed distance. For a query point and each entry's box it computes
 //! two `f64` values, `lower_sq ≤ d² ≤ upper_sq`, that bracket the exact
-//! squared distance (the `bounds` module carries the proof). The candidate
+//! squared distance (`src/nearest/bounds.rs` carries the proof). The candidate
 //! sets and orderings it returns are stated in terms of these bounds rather
 //! than a distance, so the error of a bound can only add a candidate and
 //! never remove one.
